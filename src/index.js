@@ -1,17 +1,28 @@
-var a = new Promise(function(resolve, reject) {
-	resolve('success')
-	reject('reject')
+// var a = new Promise(function(resolve, reject) {
+
+// 	resolve('ssss')
+// 	reject('eeeee')
+// })
+
+// a.then(function(res) {
+
+// 	return new Promise.resolve('ttt')
+// }).then(res => {
+// 	console.log(res)
+// })
+
+var p1 = new Promise((resolve, reject) => {
+	setTimeout(() => {
+		resolve('p1')
+	}, 1000)
 })
-var mypromise = function(value) {
-	this.value = value
-}
-mypromise.prototype.then = function() {
-	console.log(this.value)
-}
-a.then(function(res) {
+
+var p2 = new Promise((resolve, reject) => {
+	setTimeout(() => {
+		reject('p2')
+	}, 2000)
+})
+
+Promise.race([p1, p2]).then(res => {
 	console.log(res)
-	// var th = new Promise(function(res, rej) {
-	// 	res('then1')
-	// })
-	// return th
 })

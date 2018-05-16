@@ -1,3 +1,10 @@
+/**
+ * Promise 实现 遵循promise/A+规范
+ * Promise/A+规范译文:
+ * https://malcolmyu.github.io/2015/06/12/Promises-A-Plus/#note-4
+ */
+
+// promise 三个状态
 const PENDING = "pending";
 const FULFILLED = "fulfilled";
 const REJECTED = "rejected";
@@ -68,7 +75,6 @@ function Promise(excutor) {
  * @param  {[type]} reject    promise2的reject方法
  */
 function resolvePromise(promise2, x, resolve, reject) {
-    console.log(typeof x)
     if (promise2 === x) { // 如果从onFulfilled中返回的x 就是promise2 就会导致循环引用报错
         return reject(new TypeError('循环引用'));
     }
@@ -78,7 +84,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     if (x instanceof Promise) { // 获得它的终值 继续resolve
         if (x.status === PENDING) { // 如果为等待态需等待直至 x 被执行或拒绝 并解析y值
             x.then(y => {
-                console.log(y)
+                console.log('yyyyy:', y)
                 resolvePromise(promise2, y, resolve, reject);
             }, reason => {
                 reject(reason);
@@ -88,11 +94,9 @@ function resolvePromise(promise2, x, resolve, reject) {
         }
         // 如果 x 为对象或者函数
     } else if (x != null && ((typeof x === 'object') || (typeof x === 'function'))) {
-        alert()
         try { // 是否是thenable对象（具有then方法的对象/函数）
             let then = x.then;
             if (typeof then === 'function') {
-                alert()
                 then.call(x, y => {
                     if (called) return;
                     called = true;
@@ -224,7 +228,6 @@ function gen(length, resolve) {
     return function(i, value) {
         values[i] = value;
         if (++count === length) {
-            console.log(values);
             resolve(values);
         }
     }
